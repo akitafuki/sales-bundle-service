@@ -8,7 +8,7 @@ COPY src /app/src
 RUN gradle bootJar --no-daemon --stacktrace
 RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
 
-FROM eclipse-temurin:21-alpine
+FROM eclipse-temurin:25-alpine
 
 ARG DEPENDENCY=/app/build/dependency
 COPY --from=gradle-build ${DEPENDENCY}/BOOT-INF/lib /app/lib
