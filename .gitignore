@@ -26,3 +26,6 @@ bin/
 .project
 .settings
 .classpath
+
+# json
+bundle-data*
