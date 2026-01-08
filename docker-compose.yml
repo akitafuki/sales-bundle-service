@@ -17,7 +17,7 @@ services:
       - salesbundle-network
 
   db:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     restart: always
     environment:
       POSTGRES_DB: salesbundledb
