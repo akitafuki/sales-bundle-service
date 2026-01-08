@@ -31,7 +31,7 @@ dependencies {
 
     runtimeOnly 'org.postgresql:postgresql'
 
-    implementation 'com.discord4j:discord4j-core:3.2.6'
+    implementation 'com.discord4j:discord4j-core:3.3.0'
 }
 
 wrapper {
