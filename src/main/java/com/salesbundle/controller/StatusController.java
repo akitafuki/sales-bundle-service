@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -40,12 +41,12 @@ public class StatusController {
     }
 
     @PostMapping("/subscribe/{partnerId}")
-    public ResponseEntity<String> subscribe(@PathVariable String partnerId) {
+    public ResponseEntity<String> subscribe(@PathVariable String partnerId, @RequestParam String channelId) {
         if (subscriptionRepository.findByPartnerId(partnerId).isPresent()) {
             return ResponseEntity.badRequest().body("Partner already subscribed.");
         }
-        subscriptionRepository.save(new Subscription(partnerId));
-        return ResponseEntity.ok("Subscribed partner: " + partnerId);
+        subscriptionRepository.save(new Subscription(partnerId, channelId));
+        return ResponseEntity.ok("Subscribed partner: " + partnerId + " with channel: " + channelId);
     }
     
     @GetMapping("/status")

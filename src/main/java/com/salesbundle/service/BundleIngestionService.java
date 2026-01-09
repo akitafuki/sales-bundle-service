@@ -1,12 +1,13 @@
 package com.salesbundle.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.salesbundle.dto.HumbleResponse;
 import com.salesbundle.dto.MosaicSection;
 import com.salesbundle.dto.Product;
 import com.salesbundle.model.Bundle;
 import com.salesbundle.repository.BundleRepository;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.json.JsonMapper;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +23,12 @@ public class BundleIngestionService {
 
     private final S3Service s3Service;
     private final BundleRepository bundleRepository;
-    private final ObjectMapper objectMapper;
+    private final JsonMapper jsonMapper;
 
-    public BundleIngestionService(S3Service s3Service, BundleRepository bundleRepository, ObjectMapper objectMapper) {
+    public BundleIngestionService(S3Service s3Service, BundleRepository bundleRepository, JsonMapper jsonMapper) {
         this.s3Service = s3Service;
         this.bundleRepository = bundleRepository;
-        this.objectMapper = objectMapper;
-    }
+        this.jsonMapper = jsonMapper;}
 
     @Transactional
     public List<Bundle> ingestLatestBundleData() {
@@ -42,7 +42,7 @@ public class BundleIngestionService {
         log.info("Processing file: {}", key);
 
         try {
-            HumbleResponse response = objectMapper.readValue(s3Service.readFile(key), HumbleResponse.class);
+            HumbleResponse response = jsonMapper.readValue(s3Service.readFile(key), HumbleResponse.class);
             List<Bundle> newBundles = new ArrayList<>();
 
             processCategory(response.getData().getBooks().getMosaic(), "books", newBundles);

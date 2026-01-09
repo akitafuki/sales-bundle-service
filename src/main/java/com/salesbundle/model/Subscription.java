@@ -14,9 +14,12 @@ public class Subscription {
     @Column(unique = true)
     private String partnerId;
 
+    private String discordChannelId;
+
     public Subscription() {}
 
-    public Subscription(String partnerId) {
+    public Subscription(String partnerId, String discordChannelId) {
         this.partnerId = partnerId;
+        this.discordChannelId = discordChannelId;
     }
 }
