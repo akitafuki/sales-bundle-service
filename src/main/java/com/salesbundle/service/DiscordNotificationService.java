@@ -23,15 +23,12 @@ public class DiscordNotificationService {
     private final DiscordClient discordClient;
     private final SubscriptionRepository subscriptionRepository;
     private final DeliveryLogRepository deliveryLogRepository;
-    private final String channelId;
 
     public DiscordNotificationService(
             @Value("${discord.token}") String token,
-            @Value("${discord.channel-id}") String channelId,
             SubscriptionRepository subscriptionRepository,
             DeliveryLogRepository deliveryLogRepository) {
         this.discordClient = DiscordClient.create(token);
-        this.channelId = channelId;
         this.subscriptionRepository = subscriptionRepository;
         this.deliveryLogRepository = deliveryLogRepository;
     }
@@ -41,6 +38,11 @@ public class DiscordNotificationService {
 
         for (Bundle bundle : bundles) {
             for (Subscription subscription : subscriptions) {
+                if (subscription.getDiscordChannelId() == null || subscription.getDiscordChannelId().isEmpty()) {
+                    log.warn("Skipping notification for partner {}: No Discord channel ID configured", subscription.getPartnerId());
+                    continue;
+                }
+
                 if (deliveryLogRepository.findByBundleIdAndPartnerId(bundle.getId(), subscription.getPartnerId()).isPresent()) {
                     continue;
                 }
@@ -85,7 +87,7 @@ public class DiscordNotificationService {
             embedBuilder.addField("Highlights", String.join("\n", bundle.getHighlights()), false);
         }
 
-        discordClient.getChannelById(Snowflake.of(channelId))
+        discordClient.getChannelById(Snowflake.of(subscription.getDiscordChannelId()))
                 .createMessage(embedBuilder.build().asRequest())
                 .subscribe();
 
