@@ -24,7 +24,7 @@ The **Sales Bundle Service** is designed to automate the discovery and sharing o
 
 ## Architecture
 
--   **Backend**: Spring Boot 3 (Java 25)
+-   **Backend**: Spring Boot 4 (Java 25)
 -   **Database**: PostgreSQL
 -   **Storage**: AWS S3 (for source JSON files)
 -   **Notifications**: Discord API (via Discord4J)
