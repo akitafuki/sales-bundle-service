@@ -53,6 +53,9 @@ public class DiscordNotificationService {
                     logEntry.setPartnerId(subscription.getPartnerId());
                     deliveryLogRepository.save(logEntry);
                     
+                    // Rate limiting: sleep for 2 seconds
+                    Thread.sleep(2000);
+                    
                 } catch (Exception e) {
                     log.error("Failed to send notification for bundle {} to partner {}", bundle.getTitle(), subscription.getPartnerId(), e);
                 }
