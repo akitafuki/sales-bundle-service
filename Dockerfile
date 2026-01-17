@@ -1,4 +1,4 @@
-FROM gradle:9.2.1-jdk25-alpine as gradle-build
+FROM gradle:9.3.0-jdk25-alpine as gradle-build
 
 WORKDIR /app
 
